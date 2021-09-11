@@ -8,6 +8,9 @@ app.use(cors());
 app.use(express.json()); // parse del body
 dbConnection();
 
+// Directorio público
+app.use(express.static('public'));
+
 // Credenciales
 // gunter_user 
 // urMief50gCobiEcC

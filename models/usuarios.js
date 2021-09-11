@@ -13,7 +13,6 @@ const UsuarioSquema = Schema({
     password: {
         type: String,
         required: true
-
     },
     email: {
         type: String,
@@ -22,6 +21,11 @@ const UsuarioSquema = Schema({
     },
     img: {
         type: String
+    },
+    google: {
+        type: Boolean,
+        required: true,
+        default: false
     },
     rol: {
         type: String,
