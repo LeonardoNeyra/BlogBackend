@@ -24,10 +24,15 @@ router.post(
 
 router.put(
     '/:id',
-    [],
+    [
+        validarJWT,
+        check('titulo', 'El título es necesario').not().isEmpty(),
+        check('cuerpo', 'La descripción es necesaria').not().isEmpty(),
+        validarCampos
+    ],
     actualizarPost
 );
 
-router.delete('/:id', borrarPost);
+router.delete('/:id', validarJWT, borrarPost);
 
 module.exports = router;

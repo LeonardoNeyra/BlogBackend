@@ -52,18 +52,67 @@ const crearComentarios = async (req, res = response) => {
 
 const actualizarComentarios = async (req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'actualizar comentario'
-    });
+    try {
+        const id = req.params.id;
+
+        const comentarioDB = await Comentario.findById(id);
+
+        if (!comentarioDB) {
+            res.status(500).json({
+                ok: false,
+                msg: 'Comentario no encontrado'
+            });
+        }
+
+        comentarioDB.descripcion = req.body.descripcion;
+
+        const comentarioActualizado = await Comentario.findByIdAndUpdate(id, comentarioDB, { new: true });
+
+        res.json({
+            ok: true,
+            comentario: comentarioActualizado
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
 }
 
 const borrarComentarios = async (req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'borrar comentario'
-    });
+    const id = req.params.id;
+
+    try {
+        
+        const comentarioDB = await Comentario.findById(id);
+
+        if (!comentarioDB) {
+            res.status(500).json({
+                ok: false,
+                msg: 'Comentario no encontrado'
+            });
+        }
+
+        // await Post.findByIdAndDelete(id);
+        const comentarioActualizado = await Comentario.findByIdAndUpdate(id, { activo: 0 });
+
+        res.json({
+            ok: true,
+            msg: 'Comentario borrado'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+
 }
 
 module.exports = {

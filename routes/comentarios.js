@@ -24,10 +24,14 @@ router.post(
 
 router.put(
     '/:id',
-    [],
+    [
+        validarJWT,
+        check('descripcion', 'La descripción es necesaria').not().isEmpty(),
+        validarCampos
+    ],
     actualizarComentarios
 );
 
-router.delete('/:id', borrarComentarios);
+router.delete('/:id', validarJWT, borrarComentarios);
 
 module.exports = router;
