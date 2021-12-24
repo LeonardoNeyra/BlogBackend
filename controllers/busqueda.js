@@ -33,7 +33,7 @@ const getBusquedaPorColeccion = async (req, res = response) => {
 
     switch (coleccion) {
         case 'usuarios':
-            datos = await Usuario.find({ nombre: regexp });
+            datos = await Usuario.find({ nombre: regexp } && { alias: regexp });
             
             break;
     

@@ -31,7 +31,7 @@ const actualizarArchivo = async (tipo, id, nombreArchivo) => {
             break;
     
         case 'posts':
-            const post = await Pöst.findById(id);
+            const post = await Post.findById(id);
             if (!post) {
                 console.log('No hay un post con ese id');
                 return false;

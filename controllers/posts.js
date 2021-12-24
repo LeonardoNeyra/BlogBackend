@@ -6,8 +6,8 @@ const { generarJWT } = require('../helpers/jwt');
 
 const getPosts = async (req, res) => {
 
-    // const post = await Post.find({ activo: true }).populate('usuario', 'nombre img');
-    const post = await Post.find().populate('usuario', 'nombre img');
+    const post = await Post.find({ activo: true }).populate('usuario', 'nombre img');
+    // const post = await Post.find().populate('usuario', 'nombre img');
 
     try {
         res.json({

@@ -10,7 +10,7 @@ const getUsuarios = async (req, res) => {
 
     const [ usuarios, total ] = await Promise.all([
         Usuario
-            .find({}, 'nombre email rol img')
+            .find({ activo: true }, 'nombre email rol img alias google')
             .skip(desde)
             .limit(5)
         , Usuario.countDocuments()
@@ -26,15 +26,23 @@ const getUsuarios = async (req, res) => {
 
 const crearUsuarios = async (req, res = response) => {
     
-    const { email, password } = req.body;
+    const { email, alias, password } = req.body;
 
     try {
         const existeEmail = await Usuario.findOne({ email, activo: true });
+        const existeAlias = await Usuario.findOne({ alias, activo: true });
 
         if (existeEmail) {
             return res.status(400).json({
                 ok: false,
                 msg: 'El correo ya está registrado'
+            });
+        }
+
+        if (existeAlias) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El alias ya está registrado'
             });
         }
 
@@ -79,7 +87,7 @@ const actualizarUsuario = async (req, res = response) => {
             });
         }
 
-        const { password, email, ...campos} = req.body;
+        const { password, google, email, ...campos} = req.body;
         
         if (usuarioDB.email !== email) {
             const existeEmail = await Usuario.findOne({ email: email });
@@ -91,8 +99,16 @@ const actualizarUsuario = async (req, res = response) => {
                 });
             }
         }
-
-        campos.email = email;
+    
+        if (!usuarioDB.google) {
+            campos.email = email;
+        }
+        else if (usuarioDB.email !== email) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ajá! ¿Porque intentas cambiar el correo de un usuario de Google? 👀'
+            });
+        }
         const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, { new: true });
 
         res.json({

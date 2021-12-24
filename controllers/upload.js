@@ -74,11 +74,10 @@ const getFile = (req, res = response) => {
     }
     else {
         const pathFile = path.join(__dirname, `../uploads/noimage.jpg`);
-        res.sendFile(pathFile);s
+        res.sendFile(pathFile);
     }
 
 }
-
 
 module.exports = {
     fileUpload,
