@@ -1,15 +1,17 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getComentarios, crearComentarios, actualizarComentarios, borrarComentarios } = require('../controllers/comentarios');
+const { getComentarios, getComentariosByPostId, crearComentarios, actualizarComentarios, borrarComentarios, crearRespuestas } = require('../controllers/comentarios');
 const { validarJWT } = require('../middlewares/valida-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 /*
-* Ruta: /api/medico
+* Ruta: /api/comentarios
 */
 const router = Router();
 
 router.get('/', getComentarios);
+
+router.get('/:id', getComentariosByPostId);
 
 router.post(
     '/',
@@ -33,5 +35,16 @@ router.put(
 );
 
 router.delete('/:id', validarJWT, borrarComentarios);
+
+router.post(
+    '/respuesta',
+    [
+        validarJWT,
+        check('descripcion', 'La descripción es necesaria').not().isEmpty(),
+        check('post', 'El post id debe ser válido').isMongoId(),
+        validarCampos
+    ],
+    crearRespuestas
+);
 
 module.exports = router;

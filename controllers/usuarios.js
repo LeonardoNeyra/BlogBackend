@@ -2,6 +2,7 @@ const { response } = require('express');
 const bcryptjs = require('bcryptjs');
 
 const Usuario = require('../models/usuarios');
+const Post = require('../models/post');
 const { generarJWT } = require('../helpers/jwt');
 
 const getUsuarios = async (req, res) => {
@@ -160,9 +161,41 @@ const borrarUsuario = async (req, res = response) => {
     }
 }
 
+const agregarPostFavorito = async (req, res = response) => {
+
+    const  post_id = req.params.id;
+
+    try {
+
+        const postDB = await Post.findById(post_id);
+
+        if (!postDB) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No existe el post o ha sido eliminado'
+            });
+        }
+a
+        const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, { new: true });
+
+        res.json({
+            ok: true,
+            usuarioActualizado
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, revisar logs'
+        });
+    }
+}
+
 module.exports = {
     getUsuarios,
     crearUsuarios,
     actualizarUsuario,
-    borrarUsuario
+    borrarUsuario,
+    agregarPostFavorito
 }

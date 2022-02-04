@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getPosts, crearPost, actualizarPost, borrarPost } = require('../controllers/posts');
+const { getPosts, getPostById, crearPost, actualizarPost, borrarPost } = require('../controllers/posts');
 const { validarJWT } = require('../middlewares/valida-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 
@@ -10,6 +10,8 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const router = Router();
 
 router.get('/', getPosts);
+
+router.get('/:id', getPostById);
 
 router.post(
     '/',

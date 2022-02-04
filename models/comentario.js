@@ -18,6 +18,12 @@ const ComentarioSquema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comentario'
     },
+    respuestas: [{
+        required: true,
+        default: [],
+        type: Schema.Types.ObjectId,
+        ref: 'Comentario'
+    }],
     fechaCrea: {
         type: Date,
         default: new Date()

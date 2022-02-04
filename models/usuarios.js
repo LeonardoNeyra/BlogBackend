@@ -22,6 +22,10 @@ const UsuarioSquema = Schema({
     img: {
         type: String
     },
+    favoritos: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
     google: {
         type: Boolean,
         required: true,

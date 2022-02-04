@@ -23,6 +23,26 @@ const getPosts = async (req, res) => {
     }    
 }
 
+const getPostById = async (req, res) => {
+
+    const id = req.params.id;
+    const post = await Post.findById(id).populate('usuario', 'nombre img');
+    // const post = await Post.find().populate('usuario', 'nombre img');
+
+    try {
+        res.json({
+            ok: true,
+            post
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }    
+}
+
 const crearPost = async (req, res = response) => {
     
     const post = new Post({
@@ -117,6 +137,7 @@ const borrarPost = async (req, res = response) => {
 
 module.exports = {
     getPosts,
+    getPostById,
     crearPost,
     actualizarPost,
     borrarPost
